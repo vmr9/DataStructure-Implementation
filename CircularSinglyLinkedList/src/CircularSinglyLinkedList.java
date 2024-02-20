@@ -105,6 +105,7 @@ public class CircularSinglyLinkedList {
     }
 
     public void deleteCsll() {
+        tail.next = null;
         head = tail = null;
         size = 0;
     }
