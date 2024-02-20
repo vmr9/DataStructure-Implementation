@@ -1,47 +1,50 @@
-public class SinglyLinkedList {
+public class CircularSinglyLinkedList {
+
     public Node head;
     public Node tail;
     public int size;
 
-    public Node createSinglyLinkedList(int value){
+    public Node createCSLL(int value) {
         Node node = new Node();
         node.value = value;
-        node.next = null;
+        node.next = node;
         head = node;
         tail = node;
         size = 1;
         return head;
     }
 
-    public void insertInSinglyLinkedList(int value, int position){
+    public void insertInCsll(int value, int position) {
         Node node = new Node();
         node.value = value;
+        Node tempNode;
+        Node currNode = head;
+        int index = 0;
         if (head == null) {
-            createSinglyLinkedList(value);
+            createCSLL(value);
         } else if (position == 0) {
             node.next = head;
             head = node;
+            tail.next = head;
         } else if (position >= size) {
-            node.next = null;
             tail.next = node;
             tail = node;
+            tail.next = head;
         } else {
-            Node currNode = head;
-            int index = 0;
-            while(index < position){
+            while (index < position - 1) {
                 currNode = currNode.next;
                 index++;
             }
-            Node tempNode = currNode.next;
-            currNode.next = node;
+            tempNode = currNode.next;
             node.next = tempNode;
+            currNode.next = node;
         }
         size++;
     }
 
-    public void traverseSinglyLinkedList(){
+    public void traverseCsll(){
         if (head == null){
-            System.out.println("SinglyLinkedList does not exist");
+            System.out.println("CircularSinglyLinkedList does not exist");
         }
         Node currNode = head;
         for (int i = 0; i < size; i++){
@@ -54,7 +57,7 @@ public class SinglyLinkedList {
         System.out.println(" ");
     }
 
-    public void searchInSinglyLinkedList(int value){
+    public void searchInCsll(int value){
         Node currNode = head;
         for (int i = 0; i < size; i++){
             if (currNode.value == value){
@@ -64,44 +67,45 @@ public class SinglyLinkedList {
         }
     }
 
-    public void deleteInSinglyLinkedList(int position){
-        Node tempNode;
-        Node currNode = head;
+    public void deleteInCsll(int position) {
         int index = 0;
-        if (head == null){
-            System.out.println("There are no nodes to be deleted in the SinglyLinkedList");
+        Node currNode = head;
+        if (head == null) {
+            System.out.println("Cssl Does not exist");
         } else if (position == 0) {
             head = head.next;
+            tail.next = head;
             size--;
             if (size == 0) {
-                tail = null;
+                head.next = null;
+                head = null;
+                tail =null;
             }
         } else if (position >= size) {
             while (index < size - 1) {
                 currNode = currNode.next;
-                index++;
             }
             if (currNode == head) {
-                tail = head = null;
+                head.next = null;
+                head = null;
+                tail = null;
                 size--;
             }
-            currNode.next = null;
+            currNode.next = head;
             tail = currNode;
             size--;
         } else {
-            while (index < position -1) {
+            while (index < position - 1) {
                 currNode = currNode.next;
                 index++;
             }
-            tempNode = currNode.next;
-            currNode.next = tempNode.next;
+            currNode.next = currNode.next.next;
             size--;
         }
     }
 
-    public void deleteSinglyLinkedList() {
+    public void deleteCsll() {
         head = tail = null;
         size = 0;
     }
-
 }
